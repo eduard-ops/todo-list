@@ -17,6 +17,7 @@ import TodoEditor from './TodoEditor';
 const App = () => {
   const [todoes, setTodoes] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [idTodo, setId] = useState('');
 
   const formSubmitHandler = data => {
     const todo = {
@@ -47,7 +48,21 @@ const App = () => {
     setShowModal(prevState => !prevState);
   };
 
-  const editTodo = () => {
+  const editTodo = id => {
+    toggleModal();
+    setId(id);
+  };
+
+  const modalHandleSubmit = message => {
+    setTodoes(
+      todoes.map(todo => {
+        if (todo.id === idTodo) {
+          todo.todoText = message;
+          todo.isComplited = false;
+        }
+        return todo;
+      })
+    );
     toggleModal();
   };
 
@@ -64,7 +79,7 @@ const App = () => {
         />
         {showModal && (
           <Modal onClose={toggleModal}>
-            <TodoEditor onSubmit={formSubmitHandler} />
+            <TodoEditor onSubmit={modalHandleSubmit} />
           </Modal>
         )}
       </ContainerWrapper>

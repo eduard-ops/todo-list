@@ -16,5 +16,32 @@
   font: inherit;
   letter-spacing: 0.01em;
   resize: none;
-  margin-bottom: 12px;
+  margin-bottom: 30px;
+}
+
+.textarea:hover,
+.textarea:focus {
+  outline-color: rgb(25, 112, 233);
+}
+
+.btn {
+  border: 1px solid black;
+  width: 120px;
+  margin: 0 auto;
+  padding: 8px 2px;
+  cursor: pointer;
+  border-radius: 10px;
+  height: 35px;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: rgb(25, 112, 233);
+  color: aliceblue;
+  border: transparent;
+}
+
+.wrap {
+  display: flex;
+  justify-content: end;
 }

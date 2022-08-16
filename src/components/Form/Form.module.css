@@ -32,10 +32,6 @@
   border-radius: 15px;
 }
 
-form :nth-child(2) {
-  margin-bottom: 20px;
-}
-
 .button {
   cursor: pointer;
   padding: 10px;

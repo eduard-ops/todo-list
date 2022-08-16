@@ -4,6 +4,12 @@
   cursor: pointer;
 }
 
-.icon:hover {
+.btn:hover,
+.btn:focus {
+  outline: none;
+}
+
+.icon:hover,
+.icon:focus {
   fill: rgb(25, 112, 233);
 }

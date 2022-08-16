@@ -32,7 +32,7 @@ export default function TodoList({
           </span>
           <div>
             <ButtonDelete id={id} removeTodo={removeTodo} />
-            <ButtonEdit id={id} editTodo={editTodo} />
+            <ButtonEdit todoText={todoText} id={id} editTodo={editTodo} />
           </div>
         </li>
       ))}
