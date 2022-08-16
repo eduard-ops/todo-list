@@ -1,0 +1,12 @@
+.box {
+  display: none;
+}
+
+label > .box {
+  width: 20;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  text-align: center;
+}
