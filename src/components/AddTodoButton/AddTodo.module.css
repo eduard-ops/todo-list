@@ -1,0 +1,10 @@
+.btn {
+  background-color: transparent;
+  border: transparent;
+}
+
+.icon:hover,
+.icon:focus {
+  fill: rgb(25, 112, 233);
+  cursor: pointer;
+}

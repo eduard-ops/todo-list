@@ -14,15 +14,19 @@ import Modal from './Modal';
 
 import TodoEditor from './TodoEditor';
 
+import SubTodoForm from './SubTodoForm';
+
 const App = () => {
   const [todoes, setTodoes] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [idTodo, setId] = useState('');
+  const [idTodo, setIdTodo] = useState('');
+  const [showSubForm, setShowSubForm] = useState(false);
 
   const formSubmitHandler = data => {
     const todo = {
       id: nanoid(),
       isComplited: false,
+      subNote: [],
       ...data,
     };
     setTodoes(prevState => [todo, ...prevState]);
@@ -48,9 +52,63 @@ const App = () => {
     setShowModal(prevState => !prevState);
   };
 
+  const toggleForm = () => {
+    setShowSubForm(prevState => !prevState);
+  };
+
   const editTodo = id => {
     toggleModal();
-    setId(id);
+    setIdTodo(id);
+  };
+
+  const addSubTodo = id => {
+    toggleForm();
+    setIdTodo(id);
+  };
+
+  const handleRecursiveSubNoteSubmit = (sNote, id, todoText) => {
+    const subNote = sNote;
+    subNote.forEach((note, index) => {
+      if (note.id === id) {
+        subNote[index].subNote.push({
+          id: nanoid(),
+          todoText: todoText,
+          subNote: [],
+          isComplited: false,
+        });
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteSubmit(note.subNote, id, todoText);
+        }
+      }
+    });
+    return subNote;
+  };
+
+  const SubformSubmitHandler = ({ todoText, id }) => {
+    const templTodoState = todoes;
+
+    templTodoState.forEach((note, index) => {
+      if (note.id === id) {
+        templTodoState[index].subNote.push({
+          id: nanoid(),
+          todoText: todoText,
+          subNote: [],
+          isComplited: false,
+        });
+      } else {
+        if (note.subNote.length > 0) {
+          const subNote = handleRecursiveSubNoteSubmit(
+            note.subNote,
+            id,
+            todoText
+          );
+          templTodoState[index].subNote = subNote;
+        }
+      }
+    });
+
+    toggleForm();
   };
 
   const modalHandleSubmit = message => {
@@ -63,6 +121,7 @@ const App = () => {
         return todo;
       })
     );
+    setIdTodo('');
     toggleModal();
   };
 
@@ -70,13 +129,20 @@ const App = () => {
     <Container>
       <ContainerWrapper>
         <Form onSubmit={formSubmitHandler} />
+        {todoes.length > 0 && (
+          <TodoList
+            id={idTodo}
+            toggleTodoComplited={toggleTodoComplited}
+            removeTodo={removeTodo}
+            todoes={todoes}
+            editTodo={editTodo}
+            addSubTodo={addSubTodo}
+          />
+        )}
 
-        <TodoList
-          toggleTodoComplited={toggleTodoComplited}
-          removeTodo={removeTodo}
-          todoes={todoes}
-          editTodo={editTodo}
-        />
+        {showSubForm && (
+          <SubTodoForm id={idTodo} onSubmit={SubformSubmitHandler} />
+        )}
         {showModal && (
           <Modal onClose={toggleModal}>
             <TodoEditor onSubmit={modalHandleSubmit} />

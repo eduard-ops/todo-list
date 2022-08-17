@@ -25,7 +25,6 @@ export default function Form({ onSubmit }) {
           placeholder="Your todo"
           className={s.input}
           type="text"
-          name="todo"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Todo may contain only letters, apostrophe, dash and spaces. For example: Go to gym at nine o'clock"
           required

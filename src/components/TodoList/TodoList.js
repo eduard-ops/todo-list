@@ -6,15 +6,18 @@ import ButtonEdit from 'components/ButtonEdit';
 
 import Checkbox from 'components/Checkbox';
 
+import AddTodoButton from 'components/AddTodoButton';
+
 export default function TodoList({
   todoes,
   toggleTodoComplited,
   removeTodo,
   editTodo,
+  addSubTodo,
 }) {
   return (
     <ul className={s.list}>
-      {todoes.map(({ id, todoText, isComplited }) => (
+      {todoes.map(({ id, todoText, isComplited, subNote }) => (
         <li className={s.item} key={id}>
           <Checkbox
             isComplited={isComplited}
@@ -33,7 +36,11 @@ export default function TodoList({
           <div>
             <ButtonDelete id={id} removeTodo={removeTodo} />
             <ButtonEdit todoText={todoText} id={id} editTodo={editTodo} />
+            <AddTodoButton addSubTodo={addSubTodo} id={id} />
           </div>
+          {subNote.length > 0 && (
+            <TodoList addSubTodo={addSubTodo} todoes={subNote} />
+          )}
         </li>
       ))}
     </ul>
