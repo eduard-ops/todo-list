@@ -14,13 +14,11 @@ import Modal from './Modal';
 
 import TodoEditor from './TodoEditor';
 
-import SubTodoForm from './SubTodoForm';
-
 const App = () => {
   const [todoes, setTodoes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [idTodo, setIdTodo] = useState('');
-  const [showSubForm, setShowSubForm] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const formSubmitHandler = data => {
     const todo = {
@@ -44,16 +42,16 @@ const App = () => {
     );
   };
 
-  const removeTodo = id => {
-    setTodoes(todoes.filter(todo => todo.id !== id));
-  };
+  // const removeTodo = id => {
+  //   setTodoes(todoes.filter(todo => todo.id !== id));
+  // };
 
   const toggleModal = () => {
     setShowModal(prevState => !prevState);
   };
 
-  const toggleForm = () => {
-    setShowSubForm(prevState => !prevState);
+  const toggleAddModal = () => {
+    setShowAddModal(prevState => !prevState);
   };
 
   const editTodo = id => {
@@ -62,8 +60,40 @@ const App = () => {
   };
 
   const addSubTodo = id => {
-    toggleForm();
     setIdTodo(id);
+    toggleAddModal();
+  };
+
+  const handleRecursiveSubNoteDelete = (sNote, id) => {
+    const subNote = sNote;
+
+    subNote.forEach((note, index) => {
+      if (note.id === id) {
+        subNote.splice(index, 1);
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteDelete(note.subNote, id);
+        }
+      }
+    });
+    return subNote;
+  };
+
+  const deleteNote = id => {
+    console.log(id);
+    const tempNotesState = todoes;
+    tempNotesState.forEach((note, index) => {
+      if (note.id === id) {
+        tempNotesState.splice(index, 1);
+        console.log(tempNotesState);
+        setTodoes(tempNotesState);
+      } else {
+        if (note.subNote.length > 0) {
+          const subNote = handleRecursiveSubNoteDelete(note.subNote, id);
+          tempNotesState[index].subNote = subNote;
+        }
+      }
+    });
   };
 
   const handleRecursiveSubNoteSubmit = (sNote, id, todoText) => {
@@ -107,15 +137,14 @@ const App = () => {
         }
       }
     });
-
-    toggleForm();
+    toggleAddModal();
   };
 
-  const modalHandleSubmit = message => {
+  const modalHandleSubmit = ({ todoText }) => {
     setTodoes(
       todoes.map(todo => {
         if (todo.id === idTodo) {
-          todo.todoText = message;
+          todo.todoText = todoText;
           todo.isComplited = false;
         }
         return todo;
@@ -131,21 +160,26 @@ const App = () => {
         <Form onSubmit={formSubmitHandler} />
         {todoes.length > 0 && (
           <TodoList
-            id={idTodo}
+            idTodo={idTodo}
             toggleTodoComplited={toggleTodoComplited}
-            removeTodo={removeTodo}
+            removeTodo={deleteNote}
             todoes={todoes}
             editTodo={editTodo}
             addSubTodo={addSubTodo}
           />
         )}
-
-        {showSubForm && (
-          <SubTodoForm id={idTodo} onSubmit={SubformSubmitHandler} />
+        {showAddModal && (
+          <Modal onClose={toggleAddModal}>
+            <TodoEditor
+              btnText={'Add SubTodo'}
+              id={idTodo}
+              onSubmit={SubformSubmitHandler}
+            />
+          </Modal>
         )}
         {showModal && (
           <Modal onClose={toggleModal}>
-            <TodoEditor onSubmit={modalHandleSubmit} />
+            <TodoEditor btnText={'Save'} onSubmit={modalHandleSubmit} />
           </Modal>
         )}
       </ContainerWrapper>
