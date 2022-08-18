@@ -1,0 +1,15 @@
+.btn {
+  border: transparent;
+  background: none;
+  cursor: pointer;
+}
+
+.icon {
+  width: 30px;
+  height: 26px;
+}
+
+.icon:hover,
+.icon:focus {
+  fill: rgb(25, 112, 233);
+}

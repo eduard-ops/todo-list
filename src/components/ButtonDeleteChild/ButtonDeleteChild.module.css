@@ -1,0 +1,9 @@
+.icon:hover {
+  fill: rgb(25, 112, 233);
+}
+
+.btn {
+  border: transparent;
+  background: none;
+  cursor: pointer;
+}

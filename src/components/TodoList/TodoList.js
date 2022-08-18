@@ -1,5 +1,7 @@
 import s from './TodoList.module.css';
 
+import { Fragment } from 'react';
+
 import ButtonDelete from 'components/ButtonDelete';
 
 import ButtonEdit from 'components/ButtonEdit';
@@ -8,7 +10,11 @@ import Checkbox from 'components/Checkbox';
 
 import AddTodoButton from 'components/AddTodoButton';
 
-import { Fragment } from 'react';
+import ButtonDeleteChild from 'components/ButtonDeleteChild';
+
+import ButtonDown from 'components/ButtonDown';
+
+import ButtonUp from 'components/ButtonUp';
 
 export default function TodoList({
   todoes,
@@ -16,6 +22,7 @@ export default function TodoList({
   removeTodo,
   editTodo,
   addSubTodo,
+  removeChildTodo,
 }) {
   return (
     <ul className={s.list}>
@@ -30,16 +37,23 @@ export default function TodoList({
             <span
               style={
                 isComplited
-                  ? { textDecoration: 'line-through rgb(216, 82, 82)' }
+                  ? { textDecoration: 'line-through 2px rgb(216, 82, 82)' }
                   : { textDecoration: 'none' }
               }
             >
               {todoText}
             </span>
-            <div>
+            <div className={s.wrap}>
               <ButtonDelete id={id} removeTodo={removeTodo} />
               <ButtonEdit todoText={todoText} id={id} editTodo={editTodo} />
-              <AddTodoButton addSubTodo={addSubTodo} id={id} />
+              {subNote.length === 0 && (
+                <AddTodoButton addSubTodo={addSubTodo} id={id} />
+              )}
+              {subNote.length > 0 && (
+                <ButtonDeleteChild id={id} removeChildTodo={removeChildTodo} />
+              )}
+              <ButtonDown />
+              <ButtonUp />
             </div>
           </li>
 
@@ -48,6 +62,9 @@ export default function TodoList({
               removeTodo={removeTodo}
               todoes={subNote}
               addSubTodo={addSubTodo}
+              toggleTodoComplited={toggleTodoComplited}
+              editTodo={editTodo}
+              removeChildTodo={removeChildTodo}
             />
           )}
         </Fragment>

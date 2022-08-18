@@ -1,0 +1,15 @@
+.icon:hover {
+  fill: rgb(25, 112, 233);
+}
+
+.icon {
+  width: 30px;
+  height: 26px;
+  stroke-width: 4px;
+}
+
+.btn {
+  border: transparent;
+  background: none;
+  cursor: pointer;
+}

@@ -16,9 +16,27 @@ import TodoEditor from './TodoEditor';
 
 const App = () => {
   const [todoes, setTodoes] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [idTodo, setIdTodo] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
+
+  const toggleEditModal = () => {
+    setShowEditModal(prevState => !prevState);
+  };
+
+  const toggleAddModal = () => {
+    setShowAddModal(prevState => !prevState);
+  };
+
+  const editTodo = id => {
+    toggleEditModal();
+    setIdTodo(id);
+  };
+
+  const addSubTodo = id => {
+    setIdTodo(id);
+    toggleAddModal();
+  };
 
   const formSubmitHandler = data => {
     const todo = {
@@ -31,37 +49,32 @@ const App = () => {
   };
 
   const toggleTodoComplited = id => {
-    setTodoes(
-      todoes.map(todo => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          isComplited: !todo.isComplited,
-        };
-      })
-    );
+    const tempStateTodo = [...todoes];
+    tempStateTodo.forEach((note, index) => {
+      if (note.id === id) {
+        tempStateTodo[index] = { ...note, isComplited: !note.isComplited };
+        setTodoes(tempStateTodo);
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteComplited(note.subNote, id);
+
+          setTodoes(tempStateTodo);
+        }
+      }
+    });
   };
 
-  // const removeTodo = id => {
-  //   setTodoes(todoes.filter(todo => todo.id !== id));
-  // };
-
-  const toggleModal = () => {
-    setShowModal(prevState => !prevState);
-  };
-
-  const toggleAddModal = () => {
-    setShowAddModal(prevState => !prevState);
-  };
-
-  const editTodo = id => {
-    toggleModal();
-    setIdTodo(id);
-  };
-
-  const addSubTodo = id => {
-    setIdTodo(id);
-    toggleAddModal();
+  const handleRecursiveSubNoteComplited = (sNote, id) => {
+    const subNote = sNote;
+    subNote.forEach((note, index) => {
+      if (note.id === id) {
+        subNote[index] = { ...note, isComplited: !note.isComplited };
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteComplited(note.subNote, id);
+        }
+      }
+    });
   };
 
   const handleRecursiveSubNoteDelete = (sNote, id) => {
@@ -80,17 +93,16 @@ const App = () => {
   };
 
   const deleteNote = id => {
-    console.log(id);
-    const tempNotesState = todoes;
+    const tempNotesState = [...todoes];
     tempNotesState.forEach((note, index) => {
       if (note.id === id) {
         tempNotesState.splice(index, 1);
-        console.log(tempNotesState);
         setTodoes(tempNotesState);
       } else {
         if (note.subNote.length > 0) {
           const subNote = handleRecursiveSubNoteDelete(note.subNote, id);
           tempNotesState[index].subNote = subNote;
+          setTodoes(tempNotesState);
         }
       }
     });
@@ -116,7 +128,7 @@ const App = () => {
   };
 
   const SubformSubmitHandler = ({ todoText, id }) => {
-    const templTodoState = todoes;
+    const templTodoState = [...todoes];
 
     templTodoState.forEach((note, index) => {
       if (note.id === id) {
@@ -126,6 +138,7 @@ const App = () => {
           subNote: [],
           isComplited: false,
         });
+        setTodoes(templTodoState);
       } else {
         if (note.subNote.length > 0) {
           const subNote = handleRecursiveSubNoteSubmit(
@@ -134,24 +147,71 @@ const App = () => {
             todoText
           );
           templTodoState[index].subNote = subNote;
+          setTodoes(templTodoState);
         }
       }
     });
     toggleAddModal();
   };
 
-  const modalHandleSubmit = ({ todoText }) => {
-    setTodoes(
-      todoes.map(todo => {
-        if (todo.id === idTodo) {
-          todo.todoText = todoText;
-          todo.isComplited = false;
+  const modalEditHandleSubmit = ({ todoText }) => {
+    const templTodoState = [...todoes];
+    templTodoState.forEach((note, index) => {
+      if (note.id === idTodo) {
+        templTodoState[index] = { ...note, isComplited: false, todoText };
+        setTodoes(templTodoState);
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteEdit(note.subNote, idTodo, todoText);
+          setTodoes(templTodoState);
         }
-        return todo;
-      })
-    );
-    setIdTodo('');
-    toggleModal();
+      }
+    });
+    toggleEditModal();
+  };
+
+  const handleRecursiveSubNoteEdit = (sNote, id, todoText) => {
+    const subNote = sNote;
+    subNote.forEach((note, index) => {
+      if (note.id === id) {
+        subNote[index] = { ...note, isComplited: false, todoText };
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteEdit(note.subNote, idTodo, todoText);
+        }
+      }
+    });
+  };
+
+  const handleRecursiveSubNoteChildDelete = (sNote, id) => {
+    console.log(id);
+    const subNote = sNote;
+    subNote.forEach((note, index) => {
+      if (note.id === id) {
+        note.subNote.splice(index, 1);
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteChildDelete(note.subNote, id);
+        }
+      }
+    });
+  };
+
+  const deleteChildsButton = id => {
+    const stateTemp = [...todoes];
+    stateTemp.forEach((note, index) => {
+      if (note.id === id) {
+        console.log(note.id === id);
+        note.subNote.splice(index, 1);
+        setTodoes(stateTemp);
+      } else {
+        if (note.subNote.length > 0) {
+          const subNode = handleRecursiveSubNoteChildDelete(note.subNote, id);
+          stateTemp[index].subNode = subNode;
+          setTodoes(stateTemp);
+        }
+      }
+    });
   };
 
   return (
@@ -160,8 +220,8 @@ const App = () => {
         <Form onSubmit={formSubmitHandler} />
         {todoes.length > 0 && (
           <TodoList
-            idTodo={idTodo}
             toggleTodoComplited={toggleTodoComplited}
+            removeChildTodo={deleteChildsButton}
             removeTodo={deleteNote}
             todoes={todoes}
             editTodo={editTodo}
@@ -177,9 +237,9 @@ const App = () => {
             />
           </Modal>
         )}
-        {showModal && (
-          <Modal onClose={toggleModal}>
-            <TodoEditor btnText={'Save'} onSubmit={modalHandleSubmit} />
+        {showEditModal && (
+          <Modal onClose={toggleEditModal}>
+            <TodoEditor btnText={'Save'} onSubmit={modalEditHandleSubmit} />
           </Modal>
         )}
       </ContainerWrapper>
