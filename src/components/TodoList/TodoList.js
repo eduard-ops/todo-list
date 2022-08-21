@@ -26,7 +26,7 @@ export default function TodoList({
 }) {
   return (
     <ul className={s.list}>
-      {todoes.map(({ id, todoText, isComplited, subNote }) => (
+      {todoes.map(({ id, todoText, isComplited, subNote }, index) => (
         <Fragment key={id}>
           <li className={s.item}>
             <Checkbox
@@ -52,7 +52,7 @@ export default function TodoList({
               {subNote.length > 0 && (
                 <ButtonDeleteChild id={id} removeChildTodo={removeChildTodo} />
               )}
-              <ButtonDown />
+              {/* {console.log(index !== 0 )} */}
               <ButtonUp />
             </div>
           </li>

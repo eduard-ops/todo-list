@@ -6,7 +6,7 @@ import ContainerWrapper from './ContainerWrapper';
 
 import TodoList from './TodoList';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { nanoid } from 'nanoid';
 
@@ -15,10 +15,16 @@ import Modal from './Modal';
 import TodoEditor from './TodoEditor';
 
 const App = () => {
-  const [todoes, setTodoes] = useState([]);
+  const [todoes, setTodoes] = useState(
+    JSON.parse(window.localStorage.getItem('todoes')) ?? []
+  );
   const [showEditModal, setShowEditModal] = useState(false);
   const [idTodo, setIdTodo] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
+
+  useEffect(() => {
+    window.localStorage.setItem('todoes', JSON.stringify(todoes));
+  }, [todoes]);
 
   const toggleEditModal = () => {
     setShowEditModal(prevState => !prevState);
@@ -184,7 +190,6 @@ const App = () => {
   };
 
   const handleRecursiveSubNoteChildDelete = (sNote, id) => {
-    console.log(id);
     const subNote = sNote;
     subNote.forEach((note, index) => {
       if (note.id === id) {
@@ -199,15 +204,14 @@ const App = () => {
 
   const deleteChildsButton = id => {
     const stateTemp = [...todoes];
-    stateTemp.forEach((note, index) => {
+    stateTemp.forEach(note => {
       if (note.id === id) {
-        console.log(note.id === id);
-        note.subNote.splice(index, 1);
+        note.subNote.splice(0, 1);
+
         setTodoes(stateTemp);
       } else {
         if (note.subNote.length > 0) {
-          const subNode = handleRecursiveSubNoteChildDelete(note.subNote, id);
-          stateTemp[index].subNode = subNode;
+          handleRecursiveSubNoteChildDelete(note.subNote, id);
           setTodoes(stateTemp);
         }
       }
@@ -226,6 +230,8 @@ const App = () => {
             todoes={todoes}
             editTodo={editTodo}
             addSubTodo={addSubTodo}
+            moveUpTodo
+            moveDownTodo
           />
         )}
         {showAddModal && (
