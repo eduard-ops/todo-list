@@ -218,6 +218,10 @@ const App = () => {
     });
   };
 
+  const moveUpTodo = id => {
+    console.log(id);
+  };
+
   return (
     <Container>
       <ContainerWrapper>
@@ -230,7 +234,7 @@ const App = () => {
             todoes={todoes}
             editTodo={editTodo}
             addSubTodo={addSubTodo}
-            moveUpTodo
+            moveUpTodo={moveUpTodo}
             moveDownTodo
           />
         )}

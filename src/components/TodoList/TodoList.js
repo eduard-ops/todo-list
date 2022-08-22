@@ -23,6 +23,7 @@ export default function TodoList({
   editTodo,
   addSubTodo,
   removeChildTodo,
+  moveUpTodo,
 }) {
   return (
     <ul className={s.list}>
@@ -52,8 +53,8 @@ export default function TodoList({
               {subNote.length > 0 && (
                 <ButtonDeleteChild id={id} removeChildTodo={removeChildTodo} />
               )}
-              {/* {console.log(index !== 0 )} */}
-              <ButtonUp />
+              <ButtonDown />
+              <ButtonUp id={id} moveUpTodo={moveUpTodo} />
             </div>
           </li>
 
@@ -72,7 +73,3 @@ export default function TodoList({
     </ul>
   );
 }
-
-//  {
-//    [].length > 0 && <TodoList addSubTodo={addSubTodo} todoes={subNote} />;
-//  }
