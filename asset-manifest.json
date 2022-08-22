@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/todo-list/static/css/main.ed531fcc.css",
-    "main.js": "/todo-list/static/js/main.099529ca.js",
+    "main.css": "/todo-list/static/css/main.2fde1647.css",
+    "main.js": "/todo-list/static/js/main.15b22849.js",
     "static/media/icon-add.svg": "/todo-list/static/media/icon-add.ee77cf73a4ce17fe506375870bd5394e.svg",
     "index.html": "/todo-list/index.html",
     "static/media/remove.svg": "/todo-list/static/media/remove.8df91285e39dc43c6926b3a01ecbedc7.svg",
@@ -10,11 +10,11 @@
     "static/media/up-icon.svg": "/todo-list/static/media/up-icon.23bb9843725feafbb981c0f02f5a92e0.svg",
     "static/media/down-icon.svg": "/todo-list/static/media/down-icon.c8ab3f43a012176d6bd4b7b719b24acc.svg",
     "static/media/delete.svg": "/todo-list/static/media/delete.8d4c31976e2fb240a3f49a13baea8f80.svg",
-    "main.ed531fcc.css.map": "/todo-list/static/css/main.ed531fcc.css.map",
-    "main.099529ca.js.map": "/todo-list/static/js/main.099529ca.js.map"
+    "main.2fde1647.css.map": "/todo-list/static/css/main.2fde1647.css.map",
+    "main.15b22849.js.map": "/todo-list/static/js/main.15b22849.js.map"
   },
   "entrypoints": [
-    "static/css/main.ed531fcc.css",
-    "static/js/main.099529ca.js"
+    "static/css/main.2fde1647.css",
+    "static/js/main.15b22849.js"
   ]
 }
