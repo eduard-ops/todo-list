@@ -226,7 +226,7 @@ const App = () => {
         subNote.splice(index - 1, 0, ...el);
       } else {
         if (note.subNote.length > 0) {
-          handleRecursiveSubNoteChildDelete(note.subNote, id);
+          handleRecursiveSubNoteChildMoveUp(note.subNote, id);
         }
       }
     });
@@ -238,6 +238,7 @@ const App = () => {
     stateTemp.forEach((note, index) => {
       if (note.id === id) {
         const el = stateTemp.splice(index, 1);
+        console.log(el);
         stateTemp.splice(index - 1, 0, ...el);
         setTodoes(stateTemp);
       } else {

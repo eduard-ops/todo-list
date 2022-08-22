@@ -4,7 +4,12 @@ import s from './ButtonDown.module.css';
 
 export default function ButtonDown({ id, moveDownTodo }) {
   return (
-    <button className={s.btn} type="button" onClick={() => moveDownTodo(id)}>
+    <button
+      title="move down"
+      className={s.btn}
+      type="button"
+      onClick={() => moveDownTodo(id)}
+    >
       <IconDown className={s.icon} />
     </button>
   );
