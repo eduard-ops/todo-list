@@ -218,8 +218,65 @@ const App = () => {
     });
   };
 
+  const handleRecursiveSubNoteChildMoveUp = (sNote, id) => {
+    const subNote = sNote;
+    subNote.forEach((note, index) => {
+      if (note.id === id) {
+        const el = subNote.splice(index, 1);
+        subNote.splice(index - 1, 0, ...el);
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteChildDelete(note.subNote, id);
+        }
+      }
+    });
+  };
+
   const moveUpTodo = id => {
-    console.log(id);
+    const stateTemp = [...todoes];
+
+    stateTemp.forEach((note, index) => {
+      if (note.id === id) {
+        const el = stateTemp.splice(index, 1);
+        stateTemp.splice(index - 1, 0, ...el);
+        setTodoes(stateTemp);
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteChildMoveUp(note.subNote, id);
+          setTodoes(stateTemp);
+        }
+      }
+    });
+  };
+
+  const handleRecursiveSubNoteChildMoveDown = (sNote, id) => {
+    const subNote = sNote;
+    subNote.forEach((note, index) => {
+      if (note.id === id) {
+        const el = subNote.splice(index, 1);
+        subNote.splice(index + 1, 0, ...el);
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteChildMoveDown(note.subNote, id);
+        }
+      }
+    });
+  };
+
+  const moveDownTodo = id => {
+    const stateTemp = [...todoes];
+    stateTemp.forEach((note, index) => {
+      if (note.id === id) {
+        const el = stateTemp.splice(index, 1);
+        stateTemp.splice(index + 1, 0, ...el);
+        setTodoes(stateTemp);
+      } else {
+        if (note.subNote.length > 0) {
+          handleRecursiveSubNoteChildMoveDown(note.subNote, id);
+          setTodoes(stateTemp);
+        }
+      }
+    });
   };
 
   return (
@@ -235,7 +292,7 @@ const App = () => {
             editTodo={editTodo}
             addSubTodo={addSubTodo}
             moveUpTodo={moveUpTodo}
-            moveDownTodo
+            moveDownTodo={moveDownTodo}
           />
         )}
         {showAddModal && (

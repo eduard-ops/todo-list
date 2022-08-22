@@ -1,4 +1,5 @@
-.icon:hover {
+.icon:hover,
+.icon.focus {
   fill: rgb(25, 112, 233);
 }
 
