@@ -4,7 +4,12 @@ import s from './AddTodo.module.css';
 
 export default function AddTodoButton({ id, addSubTodo }) {
   return (
-    <button className={s.btn} type="button" onClick={() => addSubTodo(id)}>
+    <button
+      title="add subnote"
+      className={s.btn}
+      type="button"
+      onClick={() => addSubTodo(id)}
+    >
       <IconAdd className={s.icon} />
     </button>
   );

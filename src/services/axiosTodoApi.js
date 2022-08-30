@@ -10,7 +10,7 @@ export async function axiosTodoApi() {
   return data;
 }
 
-export async function axiosPostTodo(todoText, isComplited = false, parentId) {
+export async function axiosPostTodo(todoText, parentId, isComplited = false) {
   const response = await axios.post('/api/todoes', {
     todoText: todoText,
     isComplited,
@@ -30,8 +30,15 @@ export async function axiosDeleteTodo(id) {
 }
 
 export async function axiosUpdateTodo(id, todoText) {
-  const response = await axios.put(`/api/todoes/${id}`, {
+  const response = await axios.patch(`/api/todoes/${id}`, {
     todoText,
+  });
+  return response;
+}
+
+export async function axiosChangeComplited(id, isComplited) {
+  const response = await axios.patch(`/api/todoes/complited/${id}`, {
+    isComplited,
   });
   return response;
 }

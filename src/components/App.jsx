@@ -24,11 +24,23 @@ const App = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [idTodo, setIdTodo] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
+  // const [isComplited, setIsComplited] = useState(false);
 
   useEffect(() => {
-    axiosTodoApi().then(data => setTodoes(data));
+    const sortTodoByParentId = async () => {
+      const data = await axiosTodoApi();
+      console.log(data);
+      data.forEach((item, index, arr) => {
+        if (item.parentid === null) {
+        } else {
+          if (item.parentid) {
+            console.log(item, data[index]);
+          }
+        }
+      });
+    };
+    sortTodoByParentId();
   }, []);
-
   const toggleEditModal = () => {
     setShowEditModal(prevState => !prevState);
   };
@@ -36,6 +48,10 @@ const App = () => {
   const toggleAddModal = () => {
     setShowAddModal(prevState => !prevState);
   };
+
+  // const toogleComplited = () => {
+  //   setIsComplited(prevState => !prevState);
+  // };
 
   const editTodo = id => {
     toggleEditModal();
@@ -49,7 +65,11 @@ const App = () => {
 
   const formSubmitHandler = async todoText => {
     const res = await axiosPostTodo(todoText);
-    setTodoes(prevState => [res, ...prevState]);
+    setTodoes(prevState => [...prevState, res]);
+  };
+
+  const toggleTodoComplited = async id => {
+    // await axiosChangeComplited();
   };
 
   // const toggleTodoComplited = id => {
@@ -116,6 +136,17 @@ const App = () => {
   //     }
   //   });
   // };
+  const handleSubNoteSubmit = async todoText => {
+    const res = await axiosPostTodo(todoText, idTodo);
+    const templTodoState = [...todoes];
+    templTodoState.forEach((item, index) => {
+      if (item.id === res.parentid) {
+        item.subnotes.push(res);
+      }
+      setTodoes(templTodoState);
+    });
+    toggleAddModal();
+  };
 
   // const handleRecursiveSubNoteSubmit = (sNote, id, todoText) => {
   //   const subNote = sNote;
@@ -165,8 +196,8 @@ const App = () => {
 
   const modalEditHandleSubmit = async todoText => {
     await axiosUpdateTodo(idTodo, todoText);
-    toggleEditModal();
     window.location = '/';
+    toggleEditModal();
   };
 
   // const modalEditHandleSubmit = ({ todoText }) => {
@@ -295,7 +326,7 @@ const App = () => {
         <Form onSubmit={formSubmitHandler} />
         {todoes.length > 0 && (
           <TodoList
-            toggleTodoComplited={{}} //toggleTodoComplited
+            toggleTodoComplited={toggleTodoComplited} //toggleTodoComplited
             removeChildTodo={{}} //deleteChildsButton
             removeTodo={deleteNote} //
             todoes={todoes}
@@ -303,6 +334,7 @@ const App = () => {
             addSubTodo={addSubTodo}
             moveUpTodo={{}} // moveUpTodo
             moveDownTodo={{}} // moveDownTodo
+            isComplited={{}}
           />
         )}
         {showAddModal && (
@@ -310,7 +342,7 @@ const App = () => {
             <TodoEditor
               btnText={'Add SubTodo'}
               id={idTodo}
-              onSubmit={{}} //SubformSubmitHandler
+              onSubmit={handleSubNoteSubmit} //SubformSubmitHandler
             />
           </Modal>
         )}

@@ -26,7 +26,11 @@ export default function TodoEditor({ id, onSubmit, btnText }) {
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         title="Todo may contain only letters, apostrophe, dash and spaces. For example: Go to gym at nine o'clock"
       ></textarea>
-      <button type="submit" className={s.btn}>
+      <button
+        disabled={todoText.trim() !== '' ? false : true}
+        type="submit"
+        className={s.btn}
+      >
         {btnText}
       </button>
     </form>

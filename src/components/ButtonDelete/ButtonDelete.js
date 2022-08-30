@@ -4,7 +4,12 @@ import s from './ButtonDelete.module.css';
 
 export default function ButtonDelete({ id, removeTodo }) {
   return (
-    <button className={s.btn} type="button" onClick={() => removeTodo(id)}>
+    <button
+      title="delete todo"
+      className={s.btn}
+      type="button"
+      onClick={() => removeTodo(id)}
+    >
       <IconDelete className={s.icon} />
     </button>
   );
