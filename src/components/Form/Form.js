@@ -14,7 +14,7 @@ export default function Form({ onSubmit }) {
 
   const handleSubmut = e => {
     e.preventDefault();
-    onSubmit({ todoText });
+    onSubmit(todoText);
     setTodoText('');
   };
 

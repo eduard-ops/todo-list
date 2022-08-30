@@ -12,7 +12,7 @@ export default function TodoEditor({ id, onSubmit, btnText }) {
   const handleSubmit = e => {
     e.preventDefault();
 
-    onSubmit({ todoText, id });
+    onSubmit(todoText, id);
 
     setMessage('');
   };

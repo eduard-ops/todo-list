@@ -24,44 +24,47 @@ export default function TodoList({
   addSubTodo,
   removeChildTodo,
   moveUpTodo,
+  moveDownTodo,
 }) {
   return (
     <ul className={s.list}>
-      {todoes.map(({ id, todoText, isComplited, subNote }, index) => (
+      {todoes.map(({ id, todotext, iscomplited, subnotes }, index) => (
         <Fragment key={id}>
           <li className={s.item}>
             <Checkbox
-              isComplited={isComplited}
+              isComplited={iscomplited}
               id={id}
               toggleTodoComplited={toggleTodoComplited}
             />
             <span
               style={
-                isComplited
+                iscomplited
                   ? { textDecoration: 'line-through 2px rgb(216, 82, 82)' }
                   : { textDecoration: 'none' }
               }
             >
-              {todoText}
+              {todotext}
             </span>
             <div className={s.wrap}>
               <ButtonDelete id={id} removeTodo={removeTodo} />
-              <ButtonEdit todoText={todoText} id={id} editTodo={editTodo} />
-              {subNote.length === 0 && (
+              <ButtonEdit todoText={todotext} id={id} editTodo={editTodo} />
+              {subnotes.length === 0 && (
                 <AddTodoButton addSubTodo={addSubTodo} id={id} />
               )}
-              {subNote.length > 0 && (
+              {subnotes.length > 0 && (
                 <ButtonDeleteChild id={id} removeChildTodo={removeChildTodo} />
               )}
-              <ButtonDown />
-              <ButtonUp id={id} moveUpTodo={moveUpTodo} />
+              {index !== 0 && <ButtonUp id={id} moveUpTodo={moveUpTodo} />}
+              {todoes.length > 0 && todoes[index + 1] && (
+                <ButtonDown id={id} moveDownTodo={moveDownTodo} />
+              )}
             </div>
           </li>
 
-          {subNote && subNote.length > 0 && (
+          {subnotes && subnotes.length > 0 && (
             <TodoList
               removeTodo={removeTodo}
-              todoes={subNote}
+              todoes={subnotes}
               addSubTodo={addSubTodo}
               toggleTodoComplited={toggleTodoComplited}
               editTodo={editTodo}
