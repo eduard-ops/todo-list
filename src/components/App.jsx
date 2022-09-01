@@ -27,20 +27,20 @@ const App = () => {
   // const [isComplited, setIsComplited] = useState(false);
 
   useEffect(() => {
-    const sortTodoByParentId = async () => {
+    const parcerTodo = async (arr = [], parentId = null) => {
       const data = await axiosTodoApi();
-      console.log(data);
-      data.forEach((item, index, arr) => {
-        if (item.parentid === null) {
-        } else {
-          if (item.parentid) {
-            console.log(item, data[index]);
-          }
-        }
-      });
+      const newArr = data
+        .filter(item => item['parentid'] === parentId)
+        .map(item => ({
+          ...item,
+          subnotes: parcerTodo(arr, item.id),
+        }));
+      return newArr;
     };
-    sortTodoByParentId();
+
+    parcerTodo().then(setTodoes);
   }, []);
+
   const toggleEditModal = () => {
     setShowEditModal(prevState => !prevState);
   };
@@ -65,6 +65,7 @@ const App = () => {
 
   const formSubmitHandler = async todoText => {
     const res = await axiosPostTodo(todoText);
+    res.subnotes = [];
     setTodoes(prevState => [...prevState, res]);
   };
 
@@ -138,6 +139,7 @@ const App = () => {
   // };
   const handleSubNoteSubmit = async todoText => {
     const res = await axiosPostTodo(todoText, idTodo);
+    res.subnotes = [];
     const templTodoState = [...todoes];
     templTodoState.forEach((item, index) => {
       if (item.id === res.parentid) {
