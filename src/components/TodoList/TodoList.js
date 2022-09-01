@@ -25,7 +25,6 @@ export default function TodoList({
   removeChildTodo,
   moveUpTodo,
   moveDownTodo,
-  isComplited,
 }) {
   return (
     <ul className={s.list}>
@@ -33,13 +32,13 @@ export default function TodoList({
         <Fragment key={id}>
           <li className={s.item}>
             <Checkbox
-              isComplited={isComplited}
+              iscomplited={iscomplited}
               id={id}
               toggleTodoComplited={toggleTodoComplited}
             />
             <span
               style={
-                isComplited
+                iscomplited
                   ? { textDecoration: 'line-through 2px rgb(216, 82, 82)' }
                   : { textDecoration: 'none' }
               }

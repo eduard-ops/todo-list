@@ -6,6 +6,11 @@ import ContainerWrapper from './ContainerWrapper';
 
 import TodoList from './TodoList';
 
+import {
+  parcerTodo,
+  handleRecursiveSubNoteSubmit,
+} from '../helpers/parcerTodo';
+
 import { useState, useEffect } from 'react';
 
 import {
@@ -24,21 +29,11 @@ const App = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [idTodo, setIdTodo] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
-  // const [isComplited, setIsComplited] = useState(false);
 
   useEffect(() => {
-    const parcerTodo = async (arr = [], parentId = null) => {
-      const data = await axiosTodoApi();
-      const newArr = data
-        .filter(item => item['parentid'] === parentId)
-        .map(item => ({
-          ...item,
-          subnotes: parcerTodo(arr, item.id),
-        }));
-      return newArr;
-    };
-
-    parcerTodo().then(setTodoes);
+    axiosTodoApi().then(items => {
+      return setTodoes(parcerTodo(items));
+    });
   }, []);
 
   const toggleEditModal = () => {
@@ -48,10 +43,6 @@ const App = () => {
   const toggleAddModal = () => {
     setShowAddModal(prevState => !prevState);
   };
-
-  // const toogleComplited = () => {
-  //   setIsComplited(prevState => !prevState);
-  // };
 
   const editTodo = id => {
     toggleEditModal();
@@ -66,7 +57,7 @@ const App = () => {
   const formSubmitHandler = async todoText => {
     const res = await axiosPostTodo(todoText);
     res.subnotes = [];
-    setTodoes(prevState => [...prevState, res]);
+    setTodoes(prevState => [res, ...prevState]);
   };
 
   const toggleTodoComplited = async id => {
@@ -140,34 +131,21 @@ const App = () => {
   const handleSubNoteSubmit = async todoText => {
     const res = await axiosPostTodo(todoText, idTodo);
     res.subnotes = [];
-    const templTodoState = [...todoes];
-    templTodoState.forEach((item, index) => {
+    // eslint-disable-next-line array-callback-return
+    todoes.map(item => {
       if (item.id === res.parentid) {
         item.subnotes.push(res);
+        setTodoes(todoes);
+      } else {
+        if (item.subnotes.length > 0) {
+          handleRecursiveSubNoteSubmit(item.subnotes, todoText, res);
+          setTodoes(todoes);
+        }
       }
-      setTodoes(templTodoState);
     });
+
     toggleAddModal();
   };
-
-  // const handleRecursiveSubNoteSubmit = (sNote, id, todoText) => {
-  //   const subNote = sNote;
-  //   subNote.forEach((note, index) => {
-  //     if (note.id === id) {
-  //       subNote[index].subNote.push({
-  //         id: nanoid(),
-  //         todoText: todoText,
-  //         subNote: [],
-  //         isComplited: false,
-  //       });
-  //     } else {
-  //       if (note.subNote.length > 0) {
-  //         handleRecursiveSubNoteSubmit(note.subNote, id, todoText);
-  //       }
-  //     }
-  //   });
-  //   return subNote;
-  // };
 
   // const SubformSubmitHandler = ({ todoText, id }) => {
   //   const templTodoState = [...todoes];

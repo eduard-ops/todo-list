@@ -20,7 +20,6 @@ export async function axiosPostTodo(todoText, parentId, isComplited = false) {
     data: { data },
   } = response;
 
-  console.log(data);
   return data;
 }
 
