@@ -7,7 +7,6 @@ export const parcerTodo = (items = [], parentId = null) => {
 
 export const handleRecursiveSubNoteSubmit = (sNote, todoText, res) => {
   sNote.forEach((note, index) => {
-    console.log(note.id, res.parentid);
     if (note.id === res.parentid) {
       sNote[index].subnotes.push(res);
     } else {
