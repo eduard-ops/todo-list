@@ -41,7 +41,56 @@ const handleRecursiveSubNoteEdit = (sNote, id, todotext) => {
       }
     }
   });
-  return sNote;
+};
+
+const handleRecursiveSubNoteComplited = (sNote, id) => {
+  sNote.forEach((note, index) => {
+    if (note.id === id) {
+      return (sNote[index] = { ...note, iscomplited: !note.iscomplited });
+    } else {
+      if (note.subnotes.length > 0) {
+        return handleRecursiveSubNoteComplited(note.subnotes, id);
+      }
+    }
+  });
+};
+
+const handleRecursiveSubNoteChildMoveUp = (sNote, id) => {
+  sNote.forEach((note, index) => {
+    if (note.id === id) {
+      const el = sNote.splice(index, 1);
+      sNote.splice(index - 1, 0, ...el);
+    } else {
+      if (note.subnotes.length > 0) {
+        handleRecursiveSubNoteChildMoveUp(note.subnotes, id);
+      }
+    }
+  });
+};
+
+const handleRecursiveSubNoteChildMoveDown = (sNote, id) => {
+  sNote.forEach((note, index) => {
+    if (note.id === id) {
+      const el = sNote.splice(index, 1);
+      sNote.splice(index + 1, 0, ...el);
+    } else {
+      if (note.subnotes.length > 0) {
+        handleRecursiveSubNoteChildMoveDown(note.subnotes, id);
+      }
+    }
+  });
+};
+
+const handleRecursiveSubNoteChildDelete = (sNote, id) => {
+  sNote.forEach((note, index) => {
+    if (note.id === id) {
+      note.subnotes.splice(index, 1);
+    } else {
+      if (note.subnotes.length > 0) {
+        handleRecursiveSubNoteChildDelete(note.subnotes, id);
+      }
+    }
+  });
 };
 
 export const helpers = {
@@ -49,4 +98,8 @@ export const helpers = {
   handleRecursiveSubNoteSubmit,
   handleRecursiveSubNoteDelete,
   handleRecursiveSubNoteEdit,
+  handleRecursiveSubNoteComplited,
+  handleRecursiveSubNoteChildMoveUp,
+  handleRecursiveSubNoteChildMoveDown,
+  handleRecursiveSubNoteChildDelete,
 };

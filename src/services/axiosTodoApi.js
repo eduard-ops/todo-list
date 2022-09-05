@@ -2,7 +2,7 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:3000';
 
-export async function axiosTodoApi() {
+async function getAll() {
   const response = await axios.get('/api/todoes');
   const {
     data: { data },
@@ -10,7 +10,7 @@ export async function axiosTodoApi() {
   return data;
 }
 
-export async function axiosPostTodo(todoText, parentId, isComplited = false) {
+async function addTodo(todoText, parentId, isComplited = false) {
   const response = await axios.post('/api/todoes', {
     todoText: todoText,
     isComplited,
@@ -23,21 +23,31 @@ export async function axiosPostTodo(todoText, parentId, isComplited = false) {
   return data;
 }
 
-export async function axiosDeleteTodo(id) {
-  const response = await axios.delete(`/api/todoes/${id}`);
-  return response;
+async function deleteTodo(id) {
+  await axios.delete(`/api/todoes/${id}`);
 }
 
-export async function axiosUpdateTodo(id, todoText) {
-  const response = await axios.patch(`/api/todoes/${id}`, {
+async function deleteTodoChild(id) {
+  await axios.delete(`/api/todoes/child/${id}`);
+}
+
+async function updateTodo(id, todoText) {
+  await axios.patch(`/api/todoes/${id}`, {
     todoText,
   });
-  return response;
 }
 
-export async function axiosChangeComplited(id, isComplited) {
-  const response = await axios.patch(`/api/todoes/complited/${id}`, {
+async function toogleComplited(id, isComplited) {
+  await axios.patch(`/api/todoes/complited/${id}`, {
     isComplited,
   });
-  return response;
 }
+
+export const axiosApiTodoes = {
+  getAll,
+  addTodo,
+  deleteTodo,
+  updateTodo,
+  toogleComplited,
+  deleteTodoChild,
+};

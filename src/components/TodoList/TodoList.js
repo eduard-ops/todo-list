@@ -48,13 +48,9 @@ export default function TodoList({
             <div className={s.wrap}>
               <ButtonDelete id={id} removeTodo={removeTodo} />
               <ButtonEdit todoText={todotext} id={id} editTodo={editTodo} />
-              {subnotes.length === 0 && (
-                <AddTodoButton
-                  pathId={pathid}
-                  addSubTodo={addSubTodo}
-                  id={id}
-                />
-              )}
+
+              <AddTodoButton pathId={pathid} addSubTodo={addSubTodo} id={id} />
+
               {subnotes.length > 0 && (
                 <ButtonDeleteChild id={id} removeChildTodo={removeChildTodo} />
               )}
@@ -73,6 +69,8 @@ export default function TodoList({
               toggleTodoComplited={toggleTodoComplited}
               editTodo={editTodo}
               removeChildTodo={removeChildTodo}
+              moveUpTodo={moveUpTodo}
+              moveDownTodo={moveDownTodo}
             />
           )}
         </Fragment>

@@ -1,14 +1,17 @@
 import s from './CheckBox.module.css';
 
-export default function CheckBox({ isComplited, toggleTodoComplited, id }) {
+export default function CheckBox({ iscomplited, toggleTodoComplited, id }) {
   return (
     <>
       <label className={s.label}>
         <input
-          checked={isComplited}
+          checked={iscomplited}
           type="checkbox"
           className={s.box}
-          onChange={() => toggleTodoComplited(id)}
+          onChange={() => {
+            iscomplited = !iscomplited;
+            toggleTodoComplited(id, iscomplited);
+          }}
         />
       </label>
     </>
