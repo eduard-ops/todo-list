@@ -126,9 +126,11 @@ const App = () => {
   const deleteChildsButton = async id => {
     await axiosApiTodoes.deleteTodoChild(id);
     const stateTemp = [...todoes];
-    stateTemp.forEach(note => {
+    stateTemp.forEach((note, index) => {
       if (note.id === id) {
-        note.subnotes.splice(0, 1);
+        console.log(index);
+        note.subnotes.splice(1, -1);
+        console.log(stateTemp);
         setTodoes(stateTemp);
       } else {
         if (note.subnotes.length > 0) {

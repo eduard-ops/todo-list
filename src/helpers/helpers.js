@@ -21,7 +21,7 @@ const handleRecursiveSubNoteSubmit = (sNote, todoText, res) => {
 const handleRecursiveSubNoteDelete = (sNote, id) => {
   sNote.forEach((note, index) => {
     if (note.id === id) {
-      sNote.splice(index, 1);
+      sNote.splice(0, 1);
     } else {
       if (note.subnotes.length > 0) {
         handleRecursiveSubNoteDelete(note.subnotes, id);
