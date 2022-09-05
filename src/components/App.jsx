@@ -6,10 +6,7 @@ import ContainerWrapper from './ContainerWrapper';
 
 import TodoList from './TodoList';
 
-import {
-  parcerTodo,
-  handleRecursiveSubNoteSubmit,
-} from '../helpers/parcerTodo';
+import { helpers } from '../helpers/helpers';
 
 import { useState, useEffect } from 'react';
 
@@ -32,7 +29,7 @@ const App = () => {
 
   useEffect(() => {
     axiosTodoApi().then(items => {
-      return setTodoes(parcerTodo(items));
+      return setTodoes(helpers.parcerTodo(items));
     });
   }, []);
 
@@ -55,6 +52,7 @@ const App = () => {
   };
 
   const formSubmitHandler = async todoText => {
+    // eslint-disable-next-line no-undef
     const res = await axiosPostTodo(todoText);
     res.subnotes = [];
     setTodoes(prevState => [res, ...prevState]);
@@ -93,41 +91,21 @@ const App = () => {
   //   });
   // };
 
-  // const handleRecursiveSubNoteDelete = (sNote, id) => {
-  //   const subNote = sNote;
-
-  //   subNote.forEach((note, index) => {
-  //     if (note.id === id) {
-  //       subNote.splice(index, 1);
-  //     } else {
-  //       if (note.subNote.length > 0) {
-  //         handleRecursiveSubNoteDelete(note.subNote, id);
-  //       }
-  //     }
-  //   });
-  //   return subNote;
-  // };
-
   const deleteNote = async id => {
     await axiosDeleteTodo(id);
-    setTodoes(todoes.filter(item => item.id !== id));
+    // eslint-disable-next-line array-callback-return
+    const arr = todoes.filter(item => {
+      if (item.id === id) {
+        return item.id !== id;
+      } else {
+        if (item.subnotes.length > 0) {
+          return helpers.handleRecursiveSubNoteDelete(item.subnotes, id);
+        }
+      }
+    });
+    setTodoes(arr);
   };
 
-  // const deleteNote = id => {
-  //   const tempNotesState = [...todoes];
-  //   tempNotesState.forEach((note, index) => {
-  //     if (note.id === id) {
-  //       tempNotesState.splice(index, 1);
-  //       setTodoes(tempNotesState);
-  //     } else {
-  //       if (note.subNote.length > 0) {
-  //         const subNote = handleRecursiveSubNoteDelete(note.subNote, id);
-  //         tempNotesState[index].subNote = subNote;
-  //         setTodoes(tempNotesState);
-  //       }
-  //     }
-  //   });
-  // };
   const handleSubNoteSubmit = async todoText => {
     const res = await axiosPostTodo(todoText, idTodo);
     res.subnotes = [];
@@ -138,7 +116,7 @@ const App = () => {
         setTodoes(todoes);
       } else {
         if (item.subnotes.length > 0) {
-          handleRecursiveSubNoteSubmit(item.subnotes, todoText, res);
+          helpers.handleRecursiveSubNoteSubmit(item.subnotes, todoText, res);
           setTodoes(todoes);
         }
       }
@@ -147,36 +125,21 @@ const App = () => {
     toggleAddModal();
   };
 
-  // const SubformSubmitHandler = ({ todoText, id }) => {
-  //   const templTodoState = [...todoes];
+  const modalEditHandleSubmit = async todotext => {
+    await axiosUpdateTodo(idTodo, todotext);
 
-  //   templTodoState.forEach((note, index) => {
-  //     if (note.id === id) {
-  //       templTodoState[index].subNote.push({
-  //         id: nanoid(),
-  //         todoText: todoText,
-  //         subNote: [],
-  //         isComplited: false,
-  //       });
-  //       setTodoes(templTodoState);
-  //     } else {
-  //       if (note.subNote.length > 0) {
-  //         const subNote = handleRecursiveSubNoteSubmit(
-  //           note.subNote,
-  //           id,
-  //           todoText
-  //         );
-  //         templTodoState[index].subNote = subNote;
-  //         setTodoes(templTodoState);
-  //       }
-  //     }
-  //   });
-  //   toggleAddModal();
-  // };
-
-  const modalEditHandleSubmit = async todoText => {
-    await axiosUpdateTodo(idTodo, todoText);
-    window.location = '/';
+    // eslint-disable-next-line array-callback-return
+    todoes.map((item, index) => {
+      if (item.id === idTodo) {
+        item[index] = { ...item, iscomplited: false, todotext };
+        setTodoes(todoes);
+      } else {
+        if (item.subnotes.length > 0) {
+          helpers.handleRecursiveSubNoteEdit(item.subnotes, idTodo, todotext);
+          setTodoes(todoes);
+        }
+      }
+    });
     toggleEditModal();
   };
 
