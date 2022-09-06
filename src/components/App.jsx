@@ -56,13 +56,13 @@ const App = () => {
     await axiosApiTodoes.deleteTodo(todoId);
     // eslint-disable-next-line array-callback-return
     const tempState = [...todoes];
-    tempState.forEach(({ id, subnotes }, index) => {
-      if (id === todoId) {
+    tempState.forEach((item, index) => {
+      if (item.id === todoId) {
         tempState.splice(index, 1);
         setTodoes(tempState);
       } else {
-        if (subnotes.length > 0) {
-          helpers.handleRecursiveSubNoteDelete(subnotes, todoId);
+        if (item.subnotes.length > 0) {
+          helpers.handleRecursiveSubNoteDelete(item.subnotes, todoId);
           setTodoes(tempState);
         }
       }
@@ -127,10 +127,9 @@ const App = () => {
     await axiosApiTodoes.deleteTodoChild(id);
     const stateTemp = [...todoes];
     stateTemp.forEach((note, index) => {
+      console.log(note.subnotes.length);
       if (note.id === id) {
-        console.log(index);
-        note.subnotes.splice(1, -1);
-        console.log(stateTemp);
+        note.subnotes.splice(0, note.subnotes.length);
         setTodoes(stateTemp);
       } else {
         if (note.subnotes.length > 0) {
@@ -146,9 +145,7 @@ const App = () => {
     stateTemp.forEach((note, index) => {
       if (note.id === id) {
         const el = stateTemp.splice(index, 1);
-        console.log(el);
         stateTemp.splice(index - 1, 0, ...el);
-        console.log(index);
         setTodoes(stateTemp);
       } else {
         if (note.subnotes.length > 0) {
@@ -164,7 +161,9 @@ const App = () => {
     stateTemp.forEach((note, index) => {
       if (note.id === id) {
         const el = stateTemp.splice(index, 1);
+
         stateTemp.splice(index, 0, ...el);
+        console.log(stateTemp);
         setTodoes(stateTemp);
       } else {
         if (note.subnotes.length > 0) {

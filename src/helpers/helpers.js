@@ -21,7 +21,7 @@ const handleRecursiveSubNoteSubmit = (sNote, todoText, res) => {
 const handleRecursiveSubNoteDelete = (sNote, id) => {
   sNote.forEach((note, index) => {
     if (note.id === id) {
-      sNote.splice(0, 1);
+      sNote.splice(index, 1);
     } else {
       if (note.subnotes.length > 0) {
         handleRecursiveSubNoteDelete(note.subnotes, id);
@@ -57,6 +57,7 @@ const handleRecursiveSubNoteComplited = (sNote, id) => {
 
 const handleRecursiveSubNoteChildMoveUp = (sNote, id) => {
   sNote.forEach((note, index) => {
+    console.log(sNote);
     if (note.id === id) {
       const el = sNote.splice(index, 1);
       sNote.splice(index - 1, 0, ...el);
@@ -66,6 +67,7 @@ const handleRecursiveSubNoteChildMoveUp = (sNote, id) => {
       }
     }
   });
+  // return sNote;
 };
 
 const handleRecursiveSubNoteChildMoveDown = (sNote, id) => {
@@ -84,7 +86,7 @@ const handleRecursiveSubNoteChildMoveDown = (sNote, id) => {
 const handleRecursiveSubNoteChildDelete = (sNote, id) => {
   sNote.forEach((note, index) => {
     if (note.id === id) {
-      note.subnotes.splice(index, 1);
+      note.subnotes.splice(0, note.subnotes.length);
     } else {
       if (note.subnotes.length > 0) {
         handleRecursiveSubNoteChildDelete(note.subnotes, id);
