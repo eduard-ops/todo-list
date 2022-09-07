@@ -5,6 +5,10 @@ const parcerTodo = (items = [], parentId = null) => {
   return newArr;
 };
 
+const moveParce = (arr = [], childArr = [], parentId = null) => {
+  arr.forEach(parent => {});
+};
+
 const handleRecursiveSubNoteSubmit = (sNote, todoText, res) => {
   sNote.forEach((note, index) => {
     if (note.id === res.parentid) {
@@ -57,7 +61,6 @@ const handleRecursiveSubNoteComplited = (sNote, id) => {
 
 const handleRecursiveSubNoteChildMoveUp = (sNote, id) => {
   sNote.forEach((note, index) => {
-    console.log(sNote);
     if (note.id === id) {
       const el = sNote.splice(index, 1);
       sNote.splice(index - 1, 0, ...el);
@@ -73,37 +76,58 @@ const handleRecursiveSubNoteChildMoveUp = (sNote, id) => {
 const moveTodo = (arr, id, operator) => {
   const findIndexTodo = arr.findIndex(item => item.id === id);
 
-  const findTodo = arr.find(item => item.id === id);
+  const newArr = [...arr];
 
-  arr.splice(findIndexTodo, 1);
+  const findTodo = { ...newArr.find(item => item.id === id) };
+
+  const filter = arr.filter(item => item.id !== id);
+
+  filter.splice(findIndexTodo + 1, 0, findTodo);
+
+  arr.splice(0, arr.length);
+
+  arr.push(...filter);
+
   console.log(arr);
+
+  // console.log(arr);
+
+  //
+
+  // console.log(arr);
+
+  // console.log(arr);
+
+  // const newArr = arr.splice(findIndexTodo + 1, 0, findTodo);
+  // console.log(arr);
+
+  // arr.push(newArr);
+
   // operator === '+'
   //   ? filter.splice(findIndexTodo + 1, 0, findTodo)
   //   : filter.splice(findIndexTodo - 1, 0, findTodo);
-
-  arr.splice(findIndexTodo + 1, 0, findTodo);
 
   // return filter;
   // console.log(arr, filter);
 };
 
 const handleRecursiveSubNoteChildMoveDown = (sNote, id) => {
-  sNote.forEach(note => {
-    if (note.id === id) {
-      const findIndexTodo = sNote.findIndex(item => item.id === id);
-
-      const findTodo = sNote.find(item => item.id === id);
-
-      sNote.splice(findIndexTodo, 1);
-
-      sNote.splice(findIndexTodo + 1, 1, findTodo);
+  sNote.forEach((item, index) => {
+    if (item.id === id) {
+      moveTodo(sNote, id);
     } else {
-      if (note.subnotes.length > 0) {
-        handleRecursiveSubNoteChildMoveDown(note.subnotes, id);
+      if (item.subnotes.length > 0) {
+        sNote = handleRecursiveSubNoteChildMoveDown(item.subnotes, id);
       }
     }
   });
+
+  return sNote;
 };
+
+//  const newArr = moveTodo(item.subnotes, id);
+//  item.subnotes.splice(0, item.subnotes.length);
+//  item.subnotes.push(...newArr);
 
 const handleRecursiveSubNoteChildDelete = (sNote, id) => {
   sNote.forEach((note, index) => {
@@ -127,4 +151,5 @@ export const helpers = {
   handleRecursiveSubNoteChildMoveUp,
   handleRecursiveSubNoteChildMoveDown,
   handleRecursiveSubNoteChildDelete,
+  moveParce,
 };

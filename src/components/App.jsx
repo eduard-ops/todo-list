@@ -126,8 +126,7 @@ const App = () => {
   const deleteChildsButton = async id => {
     await axiosApiTodoes.deleteTodoChild(id);
     const stateTemp = [...todoes];
-    stateTemp.forEach((note, index) => {
-      console.log(note.subnotes.length);
+    stateTemp.forEach(note => {
       if (note.id === id) {
         note.subnotes.splice(0, note.subnotes.length);
         setTodoes(stateTemp);
@@ -144,8 +143,8 @@ const App = () => {
     const stateTemp = [...todoes];
     stateTemp.forEach(note => {
       if (note.id === id) {
-        helpers.moveTodo(stateTemp, id, '-');
-        setTodoes(stateTemp);
+        const newArr = helpers.moveTodo(stateTemp, id, '-');
+        setTodoes(newArr);
       } else {
         if (note.subnotes.length > 0) {
           helpers.handleRecursiveSubNoteChildMoveUp(note.subnotes, id);
@@ -157,15 +156,18 @@ const App = () => {
 
   const moveDownTodo = id => {
     const stateTemp = [...todoes];
-    stateTemp.forEach(note => {
+    stateTemp.forEach((note, index) => {
       if (note.id === id) {
-        helpers.moveTodo(stateTemp, id, '+');
-        console.log(stateTemp);
-        setTodoes(stateTemp);
+        const newArr = helpers.moveTodo(stateTemp, id);
+        setTodoes(newArr);
       } else {
         if (note.subnotes.length > 0) {
           helpers.handleRecursiveSubNoteChildMoveDown(note.subnotes, id);
           setTodoes(stateTemp);
+          console.log(stateTemp);
+          // helpers.moveParce(stateTemp, newArr, id);
+
+          // setTodoes(parceMove);
         }
       }
     });
