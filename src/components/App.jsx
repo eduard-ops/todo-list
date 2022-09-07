@@ -142,10 +142,9 @@ const App = () => {
 
   const moveUpTodo = id => {
     const stateTemp = [...todoes];
-    stateTemp.forEach((note, index) => {
+    stateTemp.forEach(note => {
       if (note.id === id) {
-        const el = stateTemp.splice(index, 1);
-        stateTemp.splice(index - 1, 0, ...el);
+        helpers.moveTodo(stateTemp, id, '-');
         setTodoes(stateTemp);
       } else {
         if (note.subnotes.length > 0) {
@@ -158,11 +157,9 @@ const App = () => {
 
   const moveDownTodo = id => {
     const stateTemp = [...todoes];
-    stateTemp.forEach((note, index) => {
+    stateTemp.forEach(note => {
       if (note.id === id) {
-        const el = stateTemp.splice(index, 1);
-
-        stateTemp.splice(index, 0, ...el);
+        helpers.moveTodo(stateTemp, id, '+');
         console.log(stateTemp);
         setTodoes(stateTemp);
       } else {
