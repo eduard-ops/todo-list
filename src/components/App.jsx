@@ -143,8 +143,8 @@ const App = () => {
     const stateTemp = [...todoes];
     stateTemp.forEach(note => {
       if (note.id === id) {
-        const newArr = helpers.moveTodo(stateTemp, id, '-');
-        setTodoes(newArr);
+        helpers.moveTodo(stateTemp, id, '-');
+        setTodoes(stateTemp);
       } else {
         if (note.subnotes.length > 0) {
           helpers.handleRecursiveSubNoteChildMoveUp(note.subnotes, id);
@@ -156,18 +156,16 @@ const App = () => {
 
   const moveDownTodo = id => {
     const stateTemp = [...todoes];
-    stateTemp.forEach((note, index) => {
+    // eslint-disable-next-line array-callback-return
+    stateTemp.find((note, index) => {
       if (note.id === id) {
-        const newArr = helpers.moveTodo(stateTemp, id);
-        setTodoes(newArr);
+        helpers.moveTodo(stateTemp, id, '+');
+        setTodoes(stateTemp);
+        return true;
       } else {
         if (note.subnotes.length > 0) {
           helpers.handleRecursiveSubNoteChildMoveDown(note.subnotes, id);
           setTodoes(stateTemp);
-          console.log(stateTemp);
-          // helpers.moveParce(stateTemp, newArr, id);
-
-          // setTodoes(parceMove);
         }
       }
     });
