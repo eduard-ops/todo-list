@@ -8,7 +8,11 @@ import TodoList from './TodoList';
 
 import { helpers } from '../helpers/helpers';
 
-import { useState, useEffect } from 'react';
+// import { useSelector } from 'react-redux';
+
+// import todoSelectors from 'redux/todoes/todoes-selectors';
+
+import { useState } from 'react';
 
 import { axiosApiTodoes } from '../services/axiosTodoApi';
 
@@ -22,11 +26,7 @@ const App = () => {
   const [idTodo, setIdTodo] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
 
-  useEffect(() => {
-    axiosApiTodoes.getAll().then(items => {
-      setTodoes(helpers.parcerTodo(items));
-    });
-  }, []);
+  // const dd = useSelector(state => console.log(state));
 
   const toggleEditModal = () => {
     setShowEditModal(prevState => !prevState);
@@ -47,78 +47,26 @@ const App = () => {
   };
 
   const formSubmitHandler = async todoText => {
-    const res = await axiosApiTodoes.addTodo(todoText);
-    res.subnotes = [];
-    setTodoes(prevState => [...prevState, res]);
+    // const res = await axiosApiTodoes.addTodo(todoText);
+    //   setTodoes(prevState => [...prevState, res]);
+    // };
   };
-
   const deleteNote = async todoId => {
     await axiosApiTodoes.deleteTodo(todoId);
-    // eslint-disable-next-line array-callback-return
-    const tempState = [...todoes];
-    tempState.forEach((item, index) => {
-      if (item.id === todoId) {
-        tempState.splice(index, 1);
-        setTodoes(tempState);
-      } else {
-        if (item.subnotes.length > 0) {
-          helpers.handleRecursiveSubNoteDelete(item.subnotes, todoId);
-          setTodoes(tempState);
-        }
-      }
-    });
+    // setTodoes(todoes.filter(item => item.id !== todoId));
   };
 
   const handleSubNoteSubmit = async todoText => {
-    const res = await axiosApiTodoes.addTodo(todoText, idTodo);
-    res.subnotes = [];
-    // eslint-disable-next-line array-callback-return
-    todoes.map(({ id, subnotes }) => {
-      if (id === res.parentid) {
-        subnotes.push(res);
-        setTodoes(todoes);
-      } else {
-        if (subnotes.length > 0) {
-          helpers.handleRecursiveSubNoteSubmit(subnotes, todoText, res);
-          setTodoes(todoes);
-        }
-      }
-    });
-
+    await axiosApiTodoes.addTodo(todoText, idTodo);
     toggleAddModal();
   };
 
   const toggleTodoComplited = async (id, iscomplited) => {
     await axiosApiTodoes.toogleComplited(id, iscomplited);
-    const tempStateTodo = [...todoes];
-    tempStateTodo.forEach((note, index) => {
-      if (note.id === id) {
-        tempStateTodo[index] = { ...note, iscomplited: !note.iscomplited };
-        setTodoes(tempStateTodo);
-      } else {
-        if (note.subnotes.length > 0) {
-          helpers.handleRecursiveSubNoteComplited(note.subnotes, id);
-          setTodoes(tempStateTodo);
-        }
-      }
-    });
   };
 
   const modalEditHandleSubmit = async todotext => {
     await axiosApiTodoes.updateTodo(idTodo, todotext);
-
-    // eslint-disable-next-line array-callback-return
-    todoes.map((item, index) => {
-      if (item.id === idTodo) {
-        todoes[index] = { ...item, iscomplited: false, todotext };
-        setTodoes(todoes);
-      } else {
-        if (item.subnotes.length > 0) {
-          helpers.handleRecursiveSubNoteEdit(item.subnotes, idTodo, todotext);
-          setTodoes(todoes);
-        }
-      }
-    });
 
     toggleEditModal();
   };
@@ -157,7 +105,7 @@ const App = () => {
   const moveDownTodo = id => {
     const stateTemp = [...todoes];
     // eslint-disable-next-line array-callback-return
-    stateTemp.find((note, index) => {
+    stateTemp.find(note => {
       if (note.id === id) {
         helpers.moveTodo(stateTemp, id, '+');
         setTodoes(stateTemp);

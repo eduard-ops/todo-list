@@ -31,9 +31,10 @@ async function deleteTodoChild(id) {
   await axios.delete(`/api/todoes/child/${id}`);
 }
 
-async function updateTodo(id, todoText) {
+async function updateTodo(id, todoText, isComplited = false) {
   await axios.patch(`/api/todoes/${id}`, {
     todoText,
+    isComplited,
   });
 }
 
