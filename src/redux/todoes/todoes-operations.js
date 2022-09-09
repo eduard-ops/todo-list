@@ -31,11 +31,11 @@ const deleteTodo = createAsyncThunk('deleteTodo', async id => {
   }
 });
 
-const addChildTodo = createAsyncThunk('addChildTodo', async id => {
-  try {
-    const { data } = await axios.post('/api/todoes');
-  } catch (error) {}
-});
+// const addChildTodo = createAsyncThunk('addChildTodo', async id => {
+//   try {
+//     const { data } = await axios.post('/api/todoes');
+//   } catch (error) {}
+// });
 
 const changeComplited = createAsyncThunk(
   'changeComplited',
