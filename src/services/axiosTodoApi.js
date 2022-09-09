@@ -1,54 +1,50 @@
-import axios from 'axios';
+// async function getAll() {
+//   const response = await axios.get('/api/todoes');
+//   const {
+//     data: { data },
+//   } = response;
+//   return data;
+// }
 
-axios.defaults.baseURL = 'http://localhost:3000';
+// async function addTodo(todoText, parentId, isComplited = false) {
+//   const response = await axios.post('/api/todoes', {
+//     todoText: todoText,
+//     isComplited,
+//     parentId,
+//   });
+//   const {
+//     data: { data },
+//   } = response;
 
-async function getAll() {
-  const response = await axios.get('/api/todoes');
-  const {
-    data: { data },
-  } = response;
-  return data;
-}
+//   return data;
+// }
 
-async function addTodo(todoText, parentId, isComplited = false) {
-  const response = await axios.post('/api/todoes', {
-    todoText: todoText,
-    isComplited,
-    parentId,
-  });
-  const {
-    data: { data },
-  } = response;
+// async function deleteTodo(id) {
+//   await axios.delete(`/api/todoes/${id}`);
+// }
 
-  return data;
-}
+// async function deleteTodoChild(id) {
+//   await axios.delete(`/api/todoes/child/${id}`);
+// }
 
-async function deleteTodo(id) {
-  await axios.delete(`/api/todoes/${id}`);
-}
+// async function updateTodo(id, todoText, isComplited = false) {
+//   await axios.patch(`/api/todoes/${id}`, {
+//     todoText,
+//     isComplited,
+//   });
+// }
 
-async function deleteTodoChild(id) {
-  await axios.delete(`/api/todoes/child/${id}`);
-}
+// async function toogleComplited(id, isComplited) {
+//   await axios.patch(`/api/todoes/complited/${id}`, {
+//     isComplited,
+//   });
+// }
 
-async function updateTodo(id, todoText, isComplited = false) {
-  await axios.patch(`/api/todoes/${id}`, {
-    todoText,
-    isComplited,
-  });
-}
-
-async function toogleComplited(id, isComplited) {
-  await axios.patch(`/api/todoes/complited/${id}`, {
-    isComplited,
-  });
-}
-
-export const axiosApiTodoes = {
-  getAll,
-  addTodo,
-  deleteTodo,
-  updateTodo,
-  toogleComplited,
-  deleteTodoChild,
-};
+// export const axiosApiTodoes = {
+//   getAll,
+//   addTodo,
+//   deleteTodo,
+//   updateTodo,
+//   toogleComplited,
+//   deleteTodoChild,
+// };

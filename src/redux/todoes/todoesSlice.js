@@ -2,19 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { authOperations } from './todoes-operations';
 
-const initialState = {
-  todoes: [],
-  showEditModal: false,
-  idTodo: '',
-  showAddModal: false,
-};
-
 const todoesSlice = createSlice({
   name: 'todoes',
-  initialState,
+  initialState: [],
   extraReducers: {
+    [authOperations.addTodo.fulfilled](state, { payload }) {},
+
     [authOperations.getAll.fulfilled](state, { payload }) {
-      state.todoes.push(payload.data);
+      console.log(payload);
     },
   },
 });
