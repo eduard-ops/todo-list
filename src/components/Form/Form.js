@@ -2,10 +2,16 @@ import s from './Form.module.css';
 
 import { useState } from 'react';
 
+import { useDispatch } from 'react-redux';
+
+import { authOperations } from 'redux/todoes/todoes-operations';
+
 // import PropTypes from 'prop-types';
 
-export default function Form({ onSubmit }) {
+export default function Form() {
   const [todoText, setTodoText] = useState('');
+
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const { value } = e.currentTarget;
@@ -14,7 +20,6 @@ export default function Form({ onSubmit }) {
 
   const handleSubmut = e => {
     e.preventDefault();
-    onSubmit(todoText);
     setTodoText('');
   };
 
@@ -32,7 +37,11 @@ export default function Form({ onSubmit }) {
           value={todoText}
           onChange={handleChange}
         />
-        <button className={s.button} type="submit">
+        <button
+          className={s.button}
+          type="submit"
+          onClick={() => dispatch(authOperations.addTodo({ todoText }))}
+        >
           {' '}
           Add Todo
         </button>

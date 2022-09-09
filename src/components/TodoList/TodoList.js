@@ -19,7 +19,6 @@ import ButtonUp from 'components/ButtonUp';
 export default function TodoList({
   todoes,
   toggleTodoComplited,
-  removeTodo,
   editTodo,
   addSubTodo,
   removeChildTodo,
@@ -46,7 +45,7 @@ export default function TodoList({
               {todotext}
             </span>
             <div className={s.wrap}>
-              <ButtonDelete id={id} removeTodo={removeTodo} />
+              <ButtonDelete id={id} />
               <ButtonEdit todoText={todotext} id={id} editTodo={editTodo} />
 
               <AddTodoButton addSubTodo={addSubTodo} id={id} />
@@ -63,7 +62,6 @@ export default function TodoList({
 
           {subnotes && subnotes.length > 0 && (
             <TodoList
-              removeTodo={removeTodo}
               todoes={subnotes}
               addSubTodo={addSubTodo}
               toggleTodoComplited={toggleTodoComplited}

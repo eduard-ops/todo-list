@@ -1,4 +1,4 @@
-const getAllTodoes = state => state.todoes;
+const getAllTodoes = state => state.todoes.todoes;
 
 const todoSelectors = {
   getAllTodoes,

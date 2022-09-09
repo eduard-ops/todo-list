@@ -7,5 +7,5 @@ export const store = configureStore({
     todoes: todoesSlice.reducer,
   },
   // middleware: getDefaultMiddleware =>
-  //   getDefaultMiddleware().concat(todoesSlice.middleware),
+  //   getDefaultMiddleware(todoesSlice.middleware),
 });

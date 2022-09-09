@@ -29,8 +29,6 @@ const App = () => {
 
   const todoes = useSelector(todoSelectors.getAllTodoes);
 
-  console.log(todoes);
-
   useEffect(() => {
     dispatch(authOperations.getAll());
   }, [dispatch]);
@@ -54,21 +52,13 @@ const App = () => {
   //   toggleAddModal();
   // };
 
-  const formSubmitHandler = todoText => {
-    dispatch(authOperations.addTodo({ todoText }));
-  };
-  const deleteNote = async todoId => {
-    await axiosApiTodoes.deleteTodo(todoId);
-    // setTodoes(todoes.filter(item => item.id !== todoId));
-  };
-
   const handleSubNoteSubmit = async todoText => {
-    await axiosApiTodoes.addTodo(todoText, idTodo);
     toggleAddModal();
   };
 
-  const toggleTodoComplited = async (id, iscomplited) => {
-    await axiosApiTodoes.toogleComplited(id, iscomplited);
+  const toggleTodoComplited = (id, iscomplited) => {
+    console.log(id, iscomplited);
+    dispatch(authOperations.changeComplited({ id, iscomplited }));
   };
 
   const modalEditHandleSubmit = async todotext => {
@@ -128,14 +118,13 @@ const App = () => {
   return (
     <Container>
       <ContainerWrapper>
-        <Form onSubmit={formSubmitHandler} />
+        <Form />
 
         {todoes.length > 0 && (
           <TodoList
             todoes={todoes}
             toggleTodoComplited={toggleTodoComplited}
             removeChildTodo={{}}
-            removeTodo={deleteNote} //
             editTodo={{}}
             addSubTodo={{}}
             moveUpTodo={{}}

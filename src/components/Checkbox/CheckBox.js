@@ -1,6 +1,12 @@
 import s from './CheckBox.module.css';
 
-export default function CheckBox({ iscomplited, toggleTodoComplited, id }) {
+// import { useDispatch } from 'react-redux';
+
+// import { authOperations } from 'redux/todoes/todoes-operations';
+
+export default function CheckBox({ iscomplited, id, toggleTodoComplited }) {
+  // const dispatch = useDispatch();
+
   return (
     <>
       <label className={s.label}>
