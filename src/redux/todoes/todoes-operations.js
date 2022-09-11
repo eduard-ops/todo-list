@@ -15,7 +15,11 @@ const getAll = createAsyncThunk('getAll', async _ => {
 
 const addTodo = createAsyncThunk('addTodo', async credentials => {
   try {
-    const { data } = await axios.post('/api/todoes', credentials);
+    const { idTodo, todotext } = credentials;
+    const { data } = await axios.post('/api/todoes', {
+      parentId: idTodo,
+      todoText: todotext,
+    });
     return data;
   } catch (error) {
     console.log(error.message);
@@ -31,11 +35,26 @@ const deleteTodo = createAsyncThunk('deleteTodo', async id => {
   }
 });
 
-// const addChildTodo = createAsyncThunk('addChildTodo', async id => {
-//   try {
-//     const { data } = await axios.post('/api/todoes');
-//   } catch (error) {}
-// });
+const deleteChildTodo = createAsyncThunk('deleteChildTodo', async id => {
+  try {
+    const { data } = await axios.delete(`/api/todoes/child/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const updateTodo = createAsyncThunk('changeComplited', async credentials => {
+  try {
+    const { idTodo, todotext } = credentials;
+    const { data } = await axios.patch(`/api/todoes/${idTodo}`, {
+      todoText: todotext,
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const changeComplited = createAsyncThunk(
   'changeComplited',
@@ -52,9 +71,22 @@ const changeComplited = createAsyncThunk(
   }
 );
 
+const moveUpTodo = createAsyncThunk('moveUpTodo', async id => {
+  try {
+    const { data } = await axios.patch(`/api/todoes/up/${id}`);
+    console.log(data);
+    // return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export const authOperations = {
   getAll,
   addTodo,
   deleteTodo,
   changeComplited,
+  updateTodo,
+  deleteChildTodo,
+  moveUpTodo,
 };

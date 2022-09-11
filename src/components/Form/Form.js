@@ -40,7 +40,9 @@ export default function Form() {
         <button
           className={s.button}
           type="submit"
-          onClick={() => dispatch(authOperations.addTodo({ todoText }))}
+          onClick={() =>
+            dispatch(authOperations.addTodo({ todotext: todoText }))
+          }
         >
           {' '}
           Add Todo

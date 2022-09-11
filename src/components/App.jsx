@@ -14,7 +14,7 @@ import todoSelectors from 'redux/todoes/todoes-selectors';
 
 import { useEffect, useState } from 'react';
 
-import { axiosApiTodoes } from '../services/axiosTodoApi';
+// import { axiosApiTodoes } from '../services/axiosTodoApi';
 
 import Modal from './Modal';
 
@@ -38,50 +38,33 @@ const App = () => {
   };
 
   const toggleAddModal = () => {
-    setIdTodo('');
     setShowAddModal(prevState => !prevState);
   };
 
-  // const editTodo = id => {
-  //   toggleEditModal();
-  //   setIdTodo(id);
-  // };
+  const editTodo = id => {
+    toggleEditModal();
+    setIdTodo(id);
+  };
 
-  // const addSubTodo = id => {
-  //   setIdTodo(id);
-  //   toggleAddModal();
-  // };
+  const addSubTodo = id => {
+    setIdTodo(id);
+    toggleAddModal();
+  };
 
-  const handleSubNoteSubmit = async todoText => {
+  const handleSubNoteSubmit = async todotext => {
+    dispatch(authOperations.addTodo({ idTodo, todotext }));
     toggleAddModal();
   };
 
   const toggleTodoComplited = (id, iscomplited) => {
-    console.log(id, iscomplited);
     dispatch(authOperations.changeComplited({ id, iscomplited }));
   };
 
   const modalEditHandleSubmit = async todotext => {
-    await axiosApiTodoes.updateTodo(idTodo, todotext);
+    dispatch(authOperations.updateTodo({ idTodo, todotext }));
 
     toggleEditModal();
   };
-
-  // const deleteChildsButton = async id => {
-  //   await axiosApiTodoes.deleteTodoChild(id);
-  //   const stateTemp = [...todoes];
-  //   stateTemp.forEach(note => {
-  //     if (note.id === id) {
-  //       note.subnotes.splice(0, note.subnotes.length);
-  //       setTodoes(stateTemp);
-  //     } else {
-  //       if (note.subnotes.length > 0) {
-  //         helpers.handleRecursiveSubNoteChildDelete(note.subnotes, id);
-  //         setTodoes(stateTemp);
-  //       }
-  //     }
-  //   });
-  // };
 
   // const moveUpTodo = id => {
   //   const stateTemp = [...todoes];
@@ -125,8 +108,8 @@ const App = () => {
             todoes={todoes}
             toggleTodoComplited={toggleTodoComplited}
             removeChildTodo={{}}
-            editTodo={{}}
-            addSubTodo={{}}
+            editTodo={editTodo}
+            addSubTodo={addSubTodo}
             moveUpTodo={{}}
             moveDownTodo={{}}
           />

@@ -19,8 +19,17 @@ const todoesSlice = createSlice({
     [authOperations.deleteTodo.fulfilled](state, { payload }) {
       state.todoes = payload.data;
     },
+    [authOperations.deleteChildTodo.fulfilled](state, { payload }) {
+      state.todoes = payload.data;
+    },
     [authOperations.changeComplited.fulfilled](state, { payload }) {
-      console.log(payload.data);
+      state.todoes = payload.data;
+    },
+    [authOperations.moveUpTodo.fulfilled](state, { payload }) {
+      console.log(payload);
+      // state.todoes = payload.data;
+    },
+    [authOperations.updateTodo.fulfilled](state, { payload }) {
       state.todoes = payload.data;
     },
   },
