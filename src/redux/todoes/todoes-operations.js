@@ -74,8 +74,16 @@ const changeComplited = createAsyncThunk(
 const moveUpTodo = createAsyncThunk('moveUpTodo', async id => {
   try {
     const { data } = await axios.patch(`/api/todoes/up/${id}`);
-    console.log(data);
-    // return data;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const moveDownTodo = createAsyncThunk('moveDownTodo', async id => {
+  try {
+    const { data } = await axios.patch(`/api/todoes/down/${id}`);
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -89,4 +97,5 @@ export const authOperations = {
   updateTodo,
   deleteChildTodo,
   moveUpTodo,
+  moveDownTodo,
 };

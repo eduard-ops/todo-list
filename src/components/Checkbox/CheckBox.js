@@ -1,11 +1,11 @@
 import s from './CheckBox.module.css';
 
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-// import { authOperations } from 'redux/todoes/todoes-operations';
+import { authOperations } from 'redux/todoes/todoes-operations';
 
-export default function CheckBox({ iscomplited, id, toggleTodoComplited }) {
-  // const dispatch = useDispatch();
+export default function CheckBox({ iscomplited, id }) {
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -16,7 +16,7 @@ export default function CheckBox({ iscomplited, id, toggleTodoComplited }) {
           className={s.box}
           onChange={() => {
             iscomplited = !iscomplited;
-            toggleTodoComplited(id, iscomplited);
+            dispatch(authOperations.changeComplited({ id, iscomplited }));
           }}
         />
       </label>

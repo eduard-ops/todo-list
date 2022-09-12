@@ -14,8 +14,6 @@ import todoSelectors from 'redux/todoes/todoes-selectors';
 
 import { useEffect, useState } from 'react';
 
-// import { axiosApiTodoes } from '../services/axiosTodoApi';
-
 import Modal from './Modal';
 
 import TodoEditor from './TodoEditor';
@@ -56,62 +54,21 @@ const App = () => {
     toggleAddModal();
   };
 
-  const toggleTodoComplited = (id, iscomplited) => {
-    dispatch(authOperations.changeComplited({ id, iscomplited }));
-  };
-
   const modalEditHandleSubmit = async todotext => {
     dispatch(authOperations.updateTodo({ idTodo, todotext }));
 
     toggleEditModal();
   };
 
-  // const moveUpTodo = id => {
-  //   const stateTemp = [...todoes];
-  //   stateTemp.forEach(note => {
-  //     if (note.id === id) {
-  //       helpers.moveTodo(stateTemp, id, '-');
-  //       setTodoes(stateTemp);
-  //     } else {
-  //       if (note.subnotes.length > 0) {
-  //         helpers.handleRecursiveSubNoteChildMoveUp(note.subnotes, id);
-  //         setTodoes(stateTemp);
-  //       }
-  //     }
-  //   });
-  // };
-
-  // const moveDownTodo = id => {
-  //   const stateTemp = [...todoes];
-  //   // eslint-disable-next-line array-callback-return
-  //   stateTemp.find(note => {
-  //     if (note.id === id) {
-  //       helpers.moveTodo(stateTemp, id, '+');
-  //       setTodoes(stateTemp);
-  //       return true;
-  //     } else {
-  //       if (note.subnotes.length > 0) {
-  //         helpers.handleRecursiveSubNoteChildMoveDown(note.subnotes, id);
-  //         setTodoes(stateTemp);
-  //       }
-  //     }
-  //   });
-  // };
-
   return (
     <Container>
       <ContainerWrapper>
         <Form />
-
         {todoes.length > 0 && (
           <TodoList
             todoes={todoes}
-            toggleTodoComplited={toggleTodoComplited}
-            removeChildTodo={{}}
             editTodo={editTodo}
             addSubTodo={addSubTodo}
-            moveUpTodo={{}}
-            moveDownTodo={{}}
           />
         )}
 

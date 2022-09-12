@@ -16,25 +16,13 @@ import ButtonDown from 'components/ButtonDown';
 
 import ButtonUp from 'components/ButtonUp';
 
-export default function TodoList({
-  todoes,
-  toggleTodoComplited,
-  editTodo,
-  addSubTodo,
-  removeChildTodo,
-  moveUpTodo,
-  moveDownTodo,
-}) {
+export default function TodoList({ todoes, editTodo, addSubTodo }) {
   return (
     <ul className={s.list}>
       {todoes.map(({ id, todotext, iscomplited, subnotes }, index) => (
         <Fragment key={id}>
           <li className={s.item}>
-            <Checkbox
-              iscomplited={iscomplited}
-              id={id}
-              toggleTodoComplited={toggleTodoComplited}
-            />
+            <Checkbox iscomplited={iscomplited} id={id} />
             <span
               style={
                 iscomplited
@@ -50,13 +38,9 @@ export default function TodoList({
 
               <AddTodoButton addSubTodo={addSubTodo} id={id} />
 
-              {subnotes.length > 0 && (
-                <ButtonDeleteChild id={id} removeChildTodo={removeChildTodo} />
-              )}
-              {index !== 0 && <ButtonUp id={id} moveUpTodo={moveUpTodo} />}
-              {todoes.length > 0 && todoes[index + 1] && (
-                <ButtonDown id={id} moveDownTodo={moveDownTodo} />
-              )}
+              {subnotes.length > 0 && <ButtonDeleteChild id={id} />}
+              {index !== 0 && <ButtonUp id={id} />}
+              {todoes.length > 0 && todoes[index + 1] && <ButtonDown id={id} />}
             </div>
           </li>
 
@@ -64,11 +48,7 @@ export default function TodoList({
             <TodoList
               todoes={subnotes}
               addSubTodo={addSubTodo}
-              toggleTodoComplited={toggleTodoComplited}
               editTodo={editTodo}
-              removeChildTodo={removeChildTodo}
-              moveUpTodo={moveUpTodo}
-              moveDownTodo={moveDownTodo}
             />
           )}
         </Fragment>

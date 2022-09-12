@@ -6,6 +6,4 @@ export const store = configureStore({
   reducer: {
     todoes: todoesSlice.reducer,
   },
-  // middleware: getDefaultMiddleware =>
-  //   getDefaultMiddleware(todoesSlice.middleware),
 });

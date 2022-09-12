@@ -2,13 +2,18 @@ import { ReactComponent as IconDown } from '../../images/down-icon.svg';
 
 import s from './ButtonDown.module.css';
 
-export default function ButtonDown({ id, moveDownTodo }) {
+import { useDispatch } from 'react-redux';
+
+import { authOperations } from 'redux/todoes/todoes-operations';
+
+export default function ButtonDown({ id }) {
+  const dispatch = useDispatch();
   return (
     <button
       title="down"
       className={s.btn}
       type="button"
-      onClick={() => moveDownTodo(id)}
+      onClick={() => dispatch(authOperations.moveDownTodo(id))}
     >
       <IconDown className={s.icon} />
     </button>

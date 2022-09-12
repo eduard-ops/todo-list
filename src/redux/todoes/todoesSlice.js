@@ -26,8 +26,10 @@ const todoesSlice = createSlice({
       state.todoes = payload.data;
     },
     [authOperations.moveUpTodo.fulfilled](state, { payload }) {
-      console.log(payload);
-      // state.todoes = payload.data;
+      state.todoes = payload.data;
+    },
+    [authOperations.moveDownTodo.fulfilled](state, { payload }) {
+      state.todoes = payload.data;
     },
     [authOperations.updateTodo.fulfilled](state, { payload }) {
       state.todoes = payload.data;
